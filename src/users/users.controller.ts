@@ -8,7 +8,7 @@ import {
   Patch,
   Post,
   Query,
-  ValidationPipe
+  ValidationPipe,
 } from '@nestjs/common';
 import { Role } from './users.types';
 import { UsersService } from './users.service';
