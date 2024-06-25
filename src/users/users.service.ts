@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User } from './users.types';
+import { UpdateUserDto } from './dto/update-user-dto';
+import { CreateUserDto } from './dto/create-user-dto';
 
 @Injectable()
 export class UsersService {
-  private users: Array<User> = [
+  private users = [
     {
       id: 1,
       name: 'User 1',
@@ -23,7 +24,7 @@ export class UsersService {
       age: 27,
     },
     {
-      id: 3,
+      id: 4,
       name: 'User 4',
       role: 'ADMIN',
       age: 32,
@@ -38,8 +39,12 @@ export class UsersService {
     return this.users.find((user) => user.id === id);
   }
 
-  create(user: User) {
-    this.users.push(user);
+  create(createUserDto: CreateUserDto) {
+    const users = this.users.sort((user1, user2) => user1.id - user2.id);
+    this.users.push({
+      id: (users[users.length - 1]?.id ?? 0) + 1,
+      ...createUserDto,
+    });
     return this.users;
   }
 
@@ -51,7 +56,7 @@ export class UsersService {
     return null;
   }
 
-  update(id: number, userUpdate: User) {
+  update(id: number, userUpdate: UpdateUserDto) {
     const index = this.users.findIndex((user) => user.id === id);
     if (index !== -1) {
       this.users[index] = { ...this.users[index], ...userUpdate };
